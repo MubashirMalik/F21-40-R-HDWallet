@@ -1,0 +1,66 @@
+
+.MainAccount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  width: 100%;
+  background: rgb(241, 241, 241, 0.2);
+  margin-top: -35px;
+}
+
+.MainAccount-header{
+  background: white;
+  width: 57%;
+  padding: 12px 20px 12px 20px; /* TRBL */
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.MainAccount-body {
+  width: 57%;
+  background: white;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+  word-break:break-all;
+}
+
+.AccountInformation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.AccountInformation img {
+  border-radius: 50%;
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  width: 50px;
+  height: 50px;
+}
+
+.AccountHistory {
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+}
+
+.AccountHistory-title{
+  padding: 15px 50px 15px 40px;
+  color: #037dd6;
+}
+
+.Balance-eth {
+  font-size: 30px;
+}
+
+.Balance-usd {
+  font-size: 16px;
+  color: rgb(41,40,47, 0.6);
+}
+
+.Key-info {
+  padding: 20px 50px 20px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

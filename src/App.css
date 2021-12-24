@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lekton:wght@700&display=swap');
+
+@font-face {
+  font-family: 'MyFont';
+  src: url(./fonts/trebuc.ttf);
+}
+
+* {
+  font-family: 'MyFont';
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.Form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.Form-body {
+  padding: 30px;
+  box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+  width: 400px;
+}
+
+.Warning {
+  color: rgb(207,16,49);
+  font-weight: bold;
+}
+
+.Buttons-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+form label {
+  font-size: 15px;
+}
+
+form input {
+  height: 45px;
+  border-radius: 5px;
+  border: 1px solid rgba(9, 30, 66, 0.25);
+  width: 330px;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+form input:focus {
+  outline: none;
+}
+
+button {
+  border: none;
+  padding: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  border-radius: 20px;
+  transition: all 1s ease-in;
+  background: #037dd6;
+  color: white;
+  margin-top: 12px;
+  cursor: pointer;
+  margin-left: 10px;
+}
