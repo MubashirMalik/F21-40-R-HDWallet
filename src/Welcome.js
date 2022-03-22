@@ -1,8 +1,15 @@
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import './Welcome.css';
 
 export default function Welcome() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Redirect to Account Page, if account exists
+    if (localStorage.getItem("W2-seed") !== null)
+      navigate('/main-account');
+  });
 
   return (
     <div className="Welcome">

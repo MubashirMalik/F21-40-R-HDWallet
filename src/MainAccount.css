@@ -16,6 +16,7 @@
   padding: 12px 20px 12px 20px; /* TRBL */
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
   text-align: center;
+  box-shadow: rgba(9, 30, 66, 0.4) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 
 .MainAccount-body {
@@ -23,6 +24,7 @@
   background: white;
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
   word-break:break-all;
+  box-shadow: rgba(9, 30, 66, 0.4) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 0px 0px 0px 1px;
 }
 
 .AccountInformation {
@@ -34,9 +36,9 @@
 }
 
 .AccountInformation img {
-  border-radius: 50%;
-  border: 0.5px solid rgba(0, 0, 0, 0.1);
-  width: 50px;
+  border-radius: 100%;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+  width: 48px;
   height: 50px;
 }
 
@@ -63,4 +65,22 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.input-group {
+  display: flex;
+  align-items: flex-end;
+  margin: 5px;
+  display: none;
+}
+
+.input-group input {
+  padding: 5px;
+  margin: 5px;
+  height: 35px;
+  margin-bottom: 0;
+}
+
+.input-group input:focus {
+  outline: none;
 }
