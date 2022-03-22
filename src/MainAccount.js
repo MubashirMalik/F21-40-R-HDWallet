@@ -93,14 +93,27 @@ export default function MainAccount() {
 }
 
 function AccountInformation(props) {
-  const [state, setState] = useState({balance: 0.0});
+  const [state, setState] = useState({
+    balance: 0.0,
+    recvrAddress: "",
+    amount: "",
+    message: ""
+  });
   const balance = state.balance;
   const address = props.address;
+  const recvrAddress = state.recvrAddress;
+  const amount = state.amount;
+  const message = state.message;
+
+  function handleChange(evt) {
+    setState({
+      ...state, [evt.target.name]: evt.target.value
+    });
+  }
 
   useEffect(() => {
     // running the apicall every 10 seconds
     const interval = setInterval(() => {
-      // prop is empty in 1st run of useEffect
       if (address != "")
         fetchBalance();
     }, 10000);
@@ -114,14 +127,42 @@ function AccountInformation(props) {
         console.log(err);
       } else {
         setState({
-          ...state, balance: Number(web3.utils.fromWei(result, "ether")).toFixed(2)
+          ...state, balance: Number(web3.utils.fromWei(result, "ether")).toFixed(2), message: "Balance updated.."
         });
       }
     })
   }
 
-  function sendTransaction() {
-    
+  async function sendTransaction() {
+    // get nonce: total number of transactions done by account
+    const nonce = await web3.eth.getTransactionCount(address, 'latest');
+
+    // create transaction
+    const transaction = {
+      'to': recvrAddress,
+      'value': web3.utils.toWei(amount,'ether'),
+      'gas': 3000000,
+      'maxFeePerGas': 10000001080,
+      'nonce': nonce,
+      'maxPriorityFeePerGas':3000000000
+    }
+
+    // sign transaction
+    let privateKey = "cb632f71a28a2d619e96eda77117101bfb8185bbf2a811cc146cda7afbd01838";
+    const signedTx = await web3.eth.accounts.signTransaction(transaction, privateKey);
+
+    // send transaction
+    web3.eth.sendSignedTransaction(signedTx.rawTransaction).catch( function(err, hash) {
+     if (!err) {
+       setState({
+         ...state,
+         message: `The hash of your transaction is: ${hash}You can check transaction status on Etherscan!`});
+     } else {
+       setState({
+         ...state, message: err.message
+       });
+     }
+    });
   }
 
   function toggleInputGroup() {
@@ -142,10 +183,25 @@ function AccountInformation(props) {
           <button onClick={toggleInputGroup}>Send Transaction</button>
       </div>
       <div class="input-group">
-        <input type="text" placeholder="Enter Address: 0x123"/>
-        <input type="text" placeholder="Enter Amount: (ETH)"/>
+        <input
+          name="recvrAddress"
+          type="text"
+          placeholder="Enter Address: 0x123"
+          value={recvrAddress}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          placeholder="Enter Amount: (ETH)"
+          name="amount"
+          value={amount}
+          onChange={handleChange}
+        />
         <button onClick={sendTransaction}>Send</button>
         <button onClick={toggleInputGroup}>Close</button>
+      </div>
+      <div className="Event-messages">
+        <span>Events Log</span>: {message === ""? "Nothing..." : message}
       </div>
     </div>
   );
