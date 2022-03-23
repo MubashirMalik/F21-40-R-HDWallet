@@ -102,13 +102,15 @@ function AccountInformation(props) {
     balance: 0.0,
     recvrAddress: "",
     amount: "",
-    message: ""
+    message: "",
+    transactionMessage: ""
   });
   const balance = state.balance;
   const address = props.address;
   const recvrAddress = state.recvrAddress;
   const amount = state.amount;
   const message = state.message;
+  const transactionMessage = state.transactionMessage;
 
   function handleChange(evt) {
     setState({
@@ -126,7 +128,7 @@ function AccountInformation(props) {
   });
 
   function fetchBalance() {
-    console.log("Fetching Balance..")
+    setState({...state, message: "Syncing account balance.."});
     web3.eth.getBalance(address, function(err, result) {
       if (err) {
         console.log(err);
@@ -139,9 +141,23 @@ function AccountInformation(props) {
   }
 
   async function sendTransaction() {
+    setState({...state, transactionMessage: "Getting nonce from chain.."});
     // get nonce: total number of transactions done by account
-    const nonce = await web3.eth.getTransactionCount(address, 'latest');
+    const nonce = await web3.eth.getTransactionCount(address, 'latest').catch(
+      function(err) {
+        if (!err) {
+          setState({
+            ...state,
+            transactionMessage: `Nonce = ${nonce}
+          `});
+        } else {
+          setState({
+            ...state, transactionMessage: err.message
+          });
+        }
+     });
 
+    setState({...state, transactionMessage: "Creating transaction.."});
     // create transaction
     const transaction = {
       'to': recvrAddress,
@@ -152,6 +168,7 @@ function AccountInformation(props) {
       'maxPriorityFeePerGas':3000000000
     }
 
+    setState({...state, transactionMessage: "Signing transaction.."});
     // sign transaction
     let privateKey = "cb632f71a28a2d619e96eda77117101bfb8185bbf2a811cc146cda7afbd01838";
     const signedTx = await web3.eth.accounts.signTransaction(transaction, privateKey);
@@ -161,10 +178,10 @@ function AccountInformation(props) {
      if (!err) {
        setState({
          ...state,
-         message: `The hash of your transaction is: ${hash}You can check transaction status on Etherscan!`});
+         transactionMessage: `The hash of your transaction is: ${hash}You can check transaction status on Etherscan!`});
      } else {
        setState({
-         ...state, message: err.message
+         ...state, transactionMessage: err.message
        });
      }
     });
@@ -206,7 +223,13 @@ function AccountInformation(props) {
         <button onClick={toggleInputGroup}>Close</button>
       </div>
       <div className="Event-messages">
-        <span>Events Log</span>: {message === ""? "..." : message}
+        <span>Events Log</span>:
+          <div>
+            {message === ""? "..." : message}
+          </div>
+          <div>
+            {transactionMessage === ""? "..." : transactionMessage}
+          </div>
       </div>
     </div>
   );
