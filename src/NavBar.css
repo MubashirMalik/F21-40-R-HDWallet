@@ -9,10 +9,12 @@
 }
 
 .NavBar-logo {
-  font-family: Lekton;
   font-size: 25px;
+  font-weight: bold;
 }
 
-.NavBar-account {
-
+.NavBar-newtork select {
+  border-radius: 20px;
+  padding: 5px;
+  text-align: center;
 }

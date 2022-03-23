@@ -13,6 +13,8 @@ const Web3 = require("web3");
 // INFURA PROVIDER
 const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/6cfcf2679b324ea89cbc429c63f26d56"));
 
+const NETWORK = "ropsten";
+
 const VERSION_BYTES = {
     'mainnet_public': '0488b21e',
     'mainnet_private': '0488ade4',
@@ -73,7 +75,10 @@ export default function MainAccount() {
   return (
     <div className="MainAccount">
       <div className="MainAccount-header">
-        <b>Account 1</b><br/>{`${address.substring(0, 7)}...${address.substring(36, address.length)}`}
+        <div>
+          <b>Account 1 [{NETWORK}]</b>
+          <br/>{`${address.substring(0, 7)}...${address.substring(36, address.length)}`}
+        </div>
       </div>
       <div className="MainAccount-body">
         <AccountInformation address={address} />
@@ -201,7 +206,7 @@ function AccountInformation(props) {
         <button onClick={toggleInputGroup}>Close</button>
       </div>
       <div className="Event-messages">
-        <span>Events Log</span>: {message === ""? "Nothing..." : message}
+        <span>Events Log</span>: {message === ""? "..." : message}
       </div>
     </div>
   );

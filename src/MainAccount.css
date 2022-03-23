@@ -38,8 +38,8 @@
 .AccountInformation img {
   border-radius: 100%;
   border: 0.5px solid rgba(0, 0, 0, 0.15);
-  width: 48px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
 }
 
 .Action-buttons {
@@ -54,6 +54,7 @@
 
 .Event-messages span {
   color: #037dd6;
+  font-weight: bold;
 }
 
 .AccountHistory {
@@ -63,6 +64,7 @@
 .AccountHistory-title{
   padding: 15px 50px 15px 40px;
   color: #037dd6;
+  font-weight: bold;
 }
 
 .Balance-eth {

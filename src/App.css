@@ -1,13 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lekton:wght@700&display=swap');
+@font-face {
+  font-family: 'Euclid';
+  src: url(./fonts/EuclidCircularB-Regular-WebXL.ttf);
+}
 
 @font-face {
-  font-family: 'MyFont';
-  src: url(./fonts/trebuc.ttf);
+  font-family: 'Euclid-Bold';
+  src: url(./fonts/EuclidCircularB-Bold-WebXL.ttf);
 }
 
 * {
-  font-family: 'MyFont';
+  font-family: 'Euclid';
   box-sizing: border-box;
   margin: 0;
   padding: 0;
