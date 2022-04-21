@@ -165,16 +165,16 @@ function AccountInformation(props) {
     const transaction = {
       'to': recvrAddress,
       'value': web3.utils.toWei(amount,'ether'),
-      'gas': 3000000, //await web3.eth.getGasPrice(),
-      'maxFeePerGas': 1000000108000,
+      'gas': 21000, //await web3.eth.getGasPrice(),
+      'maxFeePerGas': 134995718301,
       'nonce': nonce,
-      'maxPriorityFeePerGas':1000000108000
+      'maxPriorityFeePerGas': 1759483000
     }
 
     setState({...state, transactionMessage: "Signing transaction.."});
     // sign transaction
     const signedTx = await web3.eth.accounts.signTransaction(transaction, privateKey);
-    setState({...state, transactionMessage: `Pending Transaction: ${signedTx.transactionHash}`});
+    setState({...state, transactionMessage: `[Pending Transaction] View on Etherscan: https://ropsten.etherscan.io/tx/${signedTx.transactionHash}`});
     // send transaction
     web3.eth.sendSignedTransaction(signedTx.rawTransaction).catch( function(err, hash) {
      if (!err) {
