@@ -11,7 +11,7 @@ const bs58 = require('bs58');
 const Web3 = require("web3");
 
 // INFURA PROVIDER
-const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/6cfcf2679b324ea89cbc429c63f26d56"));
+const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/066303f832b54234a28f091297df39bc"));
 
 const NETWORK = "ropsten";
 
@@ -161,23 +161,22 @@ function AccountInformation(props) {
 
     setState({...state, transactionMessage: "Creating transaction.."});
     // create transaction
+    console.log(await web3.eth.getGasPrice())
     const transaction = {
       'to': recvrAddress,
       'value': web3.utils.toWei(amount,'ether'),
-      'gas': 3000000,
-      'maxFeePerGas': 10000001080,
+      'gas': 3000000, //await web3.eth.getGasPrice(),
+      'maxFeePerGas': 1000000108000,
       'nonce': nonce,
-      'maxPriorityFeePerGas':3000000000
+      'maxPriorityFeePerGas':1000000108000
     }
 
     setState({...state, transactionMessage: "Signing transaction.."});
     // sign transaction
     const signedTx = await web3.eth.accounts.signTransaction(transaction, privateKey);
-
-    setState({...state, transactionMessage: "Sending transaction.."});
+    setState({...state, transactionMessage: `Pending Transaction: ${signedTx.transactionHash}`});
     // send transaction
     web3.eth.sendSignedTransaction(signedTx.rawTransaction).catch( function(err, hash) {
-    setState({...state, transactionMessage: `Pending.. Hash: ${hash}`});
      if (!err) {
        setState({
          ...state,
