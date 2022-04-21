@@ -5,7 +5,7 @@ import Welcome from './Welcome';
 import SelectAction from './SelectAction';
 import CreatePassword from './CreatePassword';
 import ImportWithSeed from './ImportWithSeed';
-import SeedPhrase, {GenerateSeed, ConfirmSeed} from './SeedPhrase';
+import SeedPhrase, {GenerateSeed} from './SeedPhrase';
 
 import {
   Route,
@@ -26,7 +26,6 @@ class App extends Component {
           <Route exact path="/select-action/create-password" element={ <CreatePassword />} />
           <Route exact path="/select-action/create-password/seed-phrase/:password" element={ <SeedPhrase />} />
           <Route exact path="/select-action/create-password/seed-phrase/save/:password" element={ <GenerateSeed />} />
-          <Route exact path="/select-action/create-password/seed-phrase/confirm/:password" element={ <ConfirmSeed />} />
           <Route exact path="/main-account" element={ <MainAccount />} />
         </Routes>
       </div>

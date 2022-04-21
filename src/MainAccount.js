@@ -81,11 +81,11 @@ export default function MainAccount() {
         </div>
       </div>
       <div className="MainAccount-body">
-        <AccountInformation address={address} />
-        <AccountHistory />
+        <AccountInformation address={address} privateKey={privateKey}/>
+        <AccountHistory address={address} />
 
         <div className="Key-info">
-          There are no transactions to show.
+          <h3>Account Information</h3>
           <b>Private Key:</b> {privateKey}
           <br/>
           <b>Public Key:</b> {publicKey}
@@ -103,7 +103,8 @@ function AccountInformation(props) {
     recvrAddress: "",
     amount: "",
     message: "",
-    transactionMessage: ""
+    transactionMessage: "",
+    privateKey: ""
   });
   const balance = state.balance;
   const address = props.address;
@@ -111,6 +112,7 @@ function AccountInformation(props) {
   const amount = state.amount;
   const message = state.message;
   const transactionMessage = state.transactionMessage;
+  const privateKey = props.privateKey;
 
   function handleChange(evt) {
     setState({
@@ -170,11 +172,12 @@ function AccountInformation(props) {
 
     setState({...state, transactionMessage: "Signing transaction.."});
     // sign transaction
-    let privateKey = "cb632f71a28a2d619e96eda77117101bfb8185bbf2a811cc146cda7afbd01838";
     const signedTx = await web3.eth.accounts.signTransaction(transaction, privateKey);
 
+    setState({...state, transactionMessage: "Sending transaction.."});
     // send transaction
     web3.eth.sendSignedTransaction(signedTx.rawTransaction).catch( function(err, hash) {
+    setState({...state, transactionMessage: `Pending.. Hash: ${hash}`});
      if (!err) {
        setState({
          ...state,
@@ -235,10 +238,69 @@ function AccountInformation(props) {
   );
 }
 
-function AccountHistory() {
+function AccountHistory(props) {
+  const [state, setState] = useState({
+    transactions: []
+  });
+  const address = props.address;
+  const transactions = state.transactions;
+
+  useEffect(() => {
+    // running the apicall every 10 seconds
+    const interval = setInterval(() => {
+      if (address != "")
+        fetchTransactions();
+    }, 10000);
+    return () => clearInterval(interval);
+  });
+
+  function fetchTransactions() {
+    var url = `https://api-${NETWORK}.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=P3V5IHI9V2P5NJMST4WRE7J8SV9FG24E4W`
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", url, false );
+    xmlHttp.send( null );
+    setState({...state, transactions: JSON.parse(xmlHttp.responseText) });
+    return;
+  }
+
+  function renderTransactions() {
+    var txs = []
+
+    if (transactions.length == 0) {
+      return <div className="AccountHistory-transactions">There are no transactions to show.</div>;
+    } else {
+      for (const [key, value] of Object.entries(transactions["result"])) {
+        var txData = []
+        if (value['from'] == address) {
+          txData.push("Send")
+        } else {
+          txData.push("Receive")
+        }
+        txData.push(value["value"]/1000000000000000000)
+        txData.push(value["hash"])
+        txs.push(txData)
+      }
+      const listTransactions = txs.map((tx) =>
+        <div className="AccountHistory-transactions">
+          <div className="upper-layer">
+            <span>{ tx[0] }</span>
+            <span>{ tx[1] }</span>
+          </div>
+          <div className="lower-layer">
+            <span>{ tx[2] }</span>
+          </div>
+        </div>
+      );
+      return listTransactions;
+    }
+  }
+
   return(
-    <div className="AccountHistory">
-      <div className="AccountHistory-title">History</div>
+    <div>
+      <div className="AccountHistory">
+        <div className="AccountHistory-title">History</div>
+      </div>
+      { renderTransactions() }
     </div>
   );
 }

@@ -86,7 +86,3 @@ export function GenerateSeed() {
     </div>
   );
 }
-
-export function ConfirmSeed() {
-
-}
