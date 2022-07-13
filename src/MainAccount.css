@@ -80,7 +80,7 @@
 }
 
 .AccountHistory-transactions .lower-layer {
-  border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 0.9px solid rgb(41,40,47, 0.2);
 }
 
 .Balance-eth {

@@ -11,7 +11,36 @@ const bs58 = require('bs58');
 const Web3 = require("web3");
 
 // INFURA PROVIDER
-const web3 = new Web3(new Web3.providers.HttpProvider("https://ropsten.infura.io/v3/066303f832b54234a28f091297df39bc"));
+
+const SERVERS = [
+  "https://ropsten.infura.io/v3/066303f832b54234a28f091297df39bc",
+  "https://ropsten.infura.io/v3/4e30c39a20344f2a898dccd403e38da5",
+  "https://ropsten.infura.io/v3/a4d510108f8c4048bba936e274ab7f15",
+  "https://eth-ropsten.alchemyapi.io/v2/LWVoVI0-n9Z7V-Yh5AP6SEbmVP4is7e-",
+  "https://speedy-nodes-nyc.moralis.io/ec790a0d69bfff757a751af3/eth/ropsten",
+  "https://speedy-nodes-nyc.moralis.io/862c762c087317faec548594/eth/ropsten",
+  "https://speedy-nodes-nyc.moralis.io/9bd874cbb9cc80ada7a758d4/eth/ropsten",
+  "https://speedy-nodes-nyc.moralis.io/e8ffabf2ec350398b86a023f/eth/ropsten",
+  "https://eth-ropsten.gateway.pokt.network/v1/5f3453978e354ab992c4da79"
+];
+
+var web3, primaryServer;
+// Primary Server Select Algorithm
+async function selectServer() {
+  primaryServer =  Math.floor(Math.random() * SERVERS.length);
+
+  let currentBlockNumbers = []
+  for (let i = 0; i < SERVERS.length; i++) {
+    let web3Instance = new Web3(new Web3.providers.HttpProvider(SERVERS[i]));
+    currentBlockNumbers[i] = await web3Instance.eth.getBlockNumber();
+
+    console.log(currentBlockNumbers[i])
+  }
+  const latestBlockNumber = Math.max(...currentBlockNumbers);
+  primaryServer = currentBlockNumbers.indexOf(latestBlockNumber);
+
+  web3 = new Web3(new Web3.providers.HttpProvider(SERVERS[primaryServer]));
+}
 
 const NETWORK = "ropsten";
 
@@ -30,6 +59,7 @@ export default function MainAccount() {
   const address = state.address;
 
   useEffect(() => {
+    selectServer();
     function generatePublicKey() {
       var encryptedBuffer = localStorage.getItem('W2-seed');
       var key = localStorage.getItem('W2-pass');
@@ -123,8 +153,9 @@ function AccountInformation(props) {
   useEffect(() => {
     // running the apicall every 10 seconds
     const interval = setInterval(() => {
-      if (address != "")
+      if (address != "") {
         fetchBalance();
+      }
     }, 10000);
     return () => clearInterval(interval);
   });
@@ -136,7 +167,7 @@ function AccountInformation(props) {
         console.log(err);
       } else {
         setState({
-          ...state, balance: Number(web3.utils.fromWei(result, "ether")).toFixed(2), message: "Balance updated.."
+          ...state, balance: Number(web3.utils.fromWei(result, "ether")).toFixed(2), message: `[${new Date().toLocaleTimeString()}] Balance updated..`
         });
       }
     })
@@ -206,7 +237,7 @@ function AccountInformation(props) {
       <div className="Action-buttons">
           <button onClick={toggleInputGroup}>Send Transaction</button>
       </div>
-      <div class="input-group">
+      <div className="input-group">
         <input
           name="recvrAddress"
           type="text"
@@ -226,6 +257,9 @@ function AccountInformation(props) {
       </div>
       <div className="Event-messages">
         <span>Events Log</span>:
+          <div>
+            <b>Primary Server: {primaryServer} [{SERVERS[primaryServer]}]</b>
+          </div>
           <div>
             {message === ""? "..." : message}
           </div>
