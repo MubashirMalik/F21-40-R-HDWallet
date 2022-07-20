@@ -4,38 +4,28 @@ import { useState } from 'react';
 
 export default function CreatePassword() {
   const navigate = useNavigate();
-  const [state, setState] = useState({
+  const [formData, setFormData] = useState({
     password: "",
     passwordConf: "",
-    error: ""
   });
-  const password = state.password;
-  const passwordConf = state.passwordConf;
-  const error = state.error;
+  
+  const [error, setError] = useState("");
 
-  function validateInputs() {
+  function handleChange(event) {
+    setFormData((prevFormData) => {
+      return {...prevFormData, [event.target.name]: event.target.value}
+    });
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
     let _error = "";
-    if (password !== passwordConf)
+    if (formData.password !== formData.passwordConf)
       _error = "Passwords don't match.";
-    else if (password.length < 8)
+    else if (formData.password.length < 8)
       _error = "Password must be atleast 8 chars  long.";
-    return _error;
-  }
 
-  function handleChange(evt) {
-    setState({
-      ...state, [evt.target.name]: evt.target.value, error: validateInputs()
-    });
-  }
-
-  function handleSubmit(evt) {
-    evt.preventDefault();
-    let _error = validateInputs();
-    setState({
-      ...state, [evt.target.name]: evt.target.value, error: _error
-    });
-    if (_error === "")
-      navigate(`/select-action/create-password/seed-phrase/${password}`);
+    _error !== "" ? setError(_error) : navigate(`/select-action/create-password/seed-phrase/${formData.password}`);
   }
 
   return (
@@ -49,7 +39,7 @@ export default function CreatePassword() {
             type="password"
             id="password"
             name="password"
-            value={password}
+            value={formData.password}
             onChange={handleChange}
             autoComplete="true"
           />
@@ -58,7 +48,7 @@ export default function CreatePassword() {
             type="password"
             id="passwordConf"
             name="passwordConf"
-            value={passwordConf}
+            value={formData.passwordConf}
             onChange={handleChange}
             autoComplete="true"
           />

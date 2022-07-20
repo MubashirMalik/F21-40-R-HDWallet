@@ -153,7 +153,7 @@ function AccountInformation(props) {
   useEffect(() => {
     // running the apicall every 10 seconds
     const interval = setInterval(() => {
-      if (address != "") {
+      if (address !== "") {
         fetchBalance();
       }
     }, 10000);
@@ -231,7 +231,7 @@ function AccountInformation(props) {
 
   return(
     <div className="AccountInformation">
-      <img src={ethereumLogo}/>
+      <img src={ethereumLogo} alt="Ethereum logo"/>
       <div className="Balance-eth">{balance} ETH</div>
       <div title="May be inaccurate due to volatile rate changes!" className="Balance-usd">${(balance * 3000).toFixed(2)} USD</div>
       <div className="Action-buttons">
@@ -281,7 +281,7 @@ function AccountHistory(props) {
   useEffect(() => {
     // running the apicall every 10 seconds
     const interval = setInterval(() => {
-      if (address != "")
+      if (address !== "")
         fetchTransactions();
     }, 10000);
     return () => clearInterval(interval);
@@ -299,12 +299,12 @@ function AccountHistory(props) {
   function renderTransactions() {
     var txs = []
 
-    if (transactions.length == 0) {
+    if (transactions.length === 0) {
       return <div className="AccountHistory-transactions">There are no transactions to show.</div>;
     } else {
-      for (const [key, value] of Object.entries(transactions["result"])) {
+      for (const [, value] of Object.entries(transactions["result"])) {
         var txData = []
-        if (value['from'] == address) {
+        if (value['from'] === address) {
           txData.push("Send")
         } else {
           txData.push("Receive")
