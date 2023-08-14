@@ -3,7 +3,7 @@ import { useState } from 'react';
 import './ImportWithSeed.css';
 
 const bip39 = require('bip39');
-const aes256 = require('aes256');
+// const aes256 = require('aes256');
 
 export default function ImportWithSeed() {
   const navigate = useNavigate();
@@ -39,9 +39,9 @@ export default function ImportWithSeed() {
 
     if (_error === "") {
       // Encrypt the seed with AES-256 CBC
-      const ciphertext = aes256.encrypt(password, mnemonic);
+      //const ciphertext = aes256.encrypt(password, mnemonic);
       // Store the cipher to Browser
-      localStorage.setItem("W2-seed", ciphertext);
+      localStorage.setItem("W2-seed", "ABC"); //! to update
       localStorage.setItem("W2-pass", password);
       navigate(`/main-account`);
 

@@ -1,14 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import Web3 from 'web3'
 import './MainAccount.css';
 import ethereumLogo from './images/eth_logo.svg';
 
-const eccrypto = require("eccrypto");
 const keccak256 = require('keccak256');
 const pbkdf2 = require('pbkdf2')
-const aes256 = require('aes256')
 const bs58 = require('bs58');
-const Web3 = require("web3");
 
 // INFURA PROVIDER
 
@@ -61,38 +59,38 @@ export default function MainAccount() {
   useEffect(() => {
     selectServer();
     function generatePublicKey() {
-      var encryptedBuffer = localStorage.getItem('W2-seed');
-      var key = localStorage.getItem('W2-pass');
+    //   var encryptedBuffer = localStorage.getItem('W2-seed');
+    //   var key = localStorage.getItem('W2-pass');
 
-      var mnemonic = aes256.decrypt(key, encryptedBuffer);
+    //   var mnemonic = aes256.decrypt(key, encryptedBuffer);
 
-      // From Mnemonic to Seed
-      var genHmac="mnemonic";
-      var seed = pbkdf2.pbkdf2Sync(mnemonic, genHmac, 2048, 64, 'sha512');
-      var masterSecretKey = seed.slice(0, 32);
-      var masterChainCode = seed.slice(32, 64);
+    //   // From Mnemonic to Seed
+    //   var genHmac="mnemonic";
+    //   var seed = pbkdf2.pbkdf2Sync(mnemonic, genHmac, 2048, 64, 'sha512');
+    //   var masterSecretKey = seed.slice(0, 32);
+    //   var masterChainCode = seed.slice(32, 64);
 
-      const versionBytes = VERSION_BYTES['testnet_public'] // 4 bytes
-      const depthByte = '00'; // 1 byte
-      const parentFingerprint = '00000000'; // 4 bytes
-      const childNumBytes = '00000000'; // 4 bytes
-      const chainCodeBytes = Buffer.from(masterChainCode).toString('hex');
-      const keyBytes = '00' + Buffer.from(masterSecretKey).toString('hex'); // 33 bytes
-      const allBytes = versionBytes + depthByte + parentFingerprint + childNumBytes + chainCodeBytes + keyBytes;
-      console.log(allBytes);
+    //   const versionBytes = VERSION_BYTES['testnet_public'] // 4 bytes
+    //   const depthByte = '00'; // 1 byte
+    //   const parentFingerprint = '00000000'; // 4 bytes
+    //   const childNumBytes = '00000000'; // 4 bytes
+    //   const chainCodeBytes = Buffer.from(masterChainCode).toString('hex');
+    //   const keyBytes = '00' + Buffer.from(masterSecretKey).toString('hex'); // 33 bytes
+    //   const allBytes = versionBytes + depthByte + parentFingerprint + childNumBytes + chainCodeBytes + keyBytes;
+    //   console.log(allBytes);
 
-      console.log(bs58.encode( Buffer.from(allBytes, 'hex')));
+    //   console.log(bs58.encode( Buffer.from(allBytes, 'hex')));
 
-      var _privateKey = masterSecretKey;
-      // Corresponding uncompressed (65-byte) public key.
-      var _publicKey = eccrypto.getPublic(_privateKey);
-      // We don't need the first 04 prefix
-      _publicKey = _publicKey.slice(1, _publicKey.length)
-      var _address = keccak256(_publicKey);
-      // Address is last 20 bytes of keccak256 of publicKey
-      var ethAddress =  _address.slice(12, _address.length);
+    //   var _privateKey = masterSecretKey;
+    //   // Corresponding uncompressed (65-byte) public key.
+    //   var _publicKey = eccrypto.getPublic(_privateKey);
+    //   // We don't need the first 04 prefix
+    //   _publicKey = _publicKey.slice(1, _publicKey.length)
+    //   var _address = keccak256(_publicKey);
+    //   // Address is last 20 bytes of keccak256 of publicKey
+    //   var ethAddress =  _address.slice(12, _address.length);
 
-      setState({...state, privateKey: Buffer.from(_privateKey).toString('hex') ,publicKey: Buffer.from(_publicKey).toString('hex'), address: "0x" + Buffer.from(ethAddress).toString('hex')});
+    //   setState({...state, privateKey: Buffer.from(_privateKey).toString('hex') ,publicKey: Buffer.from(_publicKey).toString('hex'), address: "0x" + Buffer.from(ethAddress).toString('hex')});
     }
 
     // Redirect to Starting Page, if account doesn't exist

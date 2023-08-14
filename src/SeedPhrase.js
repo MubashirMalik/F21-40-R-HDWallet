@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { Buffer } from 'buffer';
 import './SeedPhrase.css';
 
 const bip39 = require('bip39');
-const aes256 = require('aes256');
 const FileSaver = require('file-saver');
 
 export default function SeedPhrase() {
@@ -52,9 +52,9 @@ export function GenerateSeed() {
   const mnemonic = bip39.generateMnemonic();
   // Encrypt the seed with AES-256 CBC
   const key = password;
-  const ciphertext = aes256.encrypt(key, mnemonic);
+  //const ciphertext = aes256.encrypt(key, mnemonic);
   // Store the cipher to Browser
-  localStorage.setItem("W2-seed", ciphertext);
+  localStorage.setItem("W2-seed", "ciphertext");
   localStorage.setItem("W2-pass", password);
 
   function downloadSeed() {
